@@ -1,4 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
+import passport from 'passport';
+import session from 'express-session';
 import morgan from 'morgan';
 import path from 'path';
 import coffeeRoutes from './routes/coffeeRoutes';
@@ -19,6 +21,12 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, "../src/views"));
 app.set('view options', {layout: 'layout'});
 
+// Passport/Session middleware - authentication
+app.use(session({ secret: 'I am a child of God' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routing Middleware
 app.use('/coffee', coffeeRoutes);
 app.use('/user', userRoutes);
 app.use('/', defaultCoffee);
