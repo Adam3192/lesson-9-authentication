@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
+const express_session_1 = __importDefault(require("express-session"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
 const coffeeRoutes_1 = __importDefault(require("./routes/coffeeRoutes"));
@@ -19,6 +21,11 @@ app.use(express_1.default.static(path_1.default.join(__dirname, '../src/public')
 app.set('view engine', 'hbs');
 app.set('views', path_1.default.join(__dirname, "../src/views"));
 app.set('view options', { layout: 'layout' });
+// Passport/Session middleware - authentication
+app.use((0, express_session_1.default)({ secret: 'I am a child of God' }));
+app.use(passport_1.default.initialize());
+app.use(passport_1.default.session());
+// Routing Middleware
 app.use('/coffee', coffeeRoutes_1.default);
 app.use('/user', userRoutes_1.default);
 app.use('/', coffeeController_1.defaultCoffee);
